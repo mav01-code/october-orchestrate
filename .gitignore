@@ -1,0 +1,9 @@
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+.pytest_cache/
+code/evaluation/.*.tmp.csv
+code/evaluation/.*.tmp.json
+/output.baseline.csv

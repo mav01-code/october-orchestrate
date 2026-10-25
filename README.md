@@ -14,30 +14,93 @@ Read [`problem_statement.md`](./problem_statement.md) for the complete challenge
 
 ## Quick Start
 
-Clone the repository and move into the project directory:
+From the repository root, use Python 3.10 or newer:
 
 ```bash
-git clone https://github.com/interviewstreet/hackerrank-orchestrate-october26.git
-cd hackerrank-orchestrate-october26
+python code/main.py
 ```
 
-Start your AI coding tool from the **repository root** so it automatically reads [`AGENTS.md`](./AGENTS.md) and logs your session turns to `log.txt` in the root directory.
-
-Build your solution in `code/main.py`, or use another language and document its setup and run command clearly in your README.
-
-Your solution must:
-
-- Read the input files from `dataset/`
-- Generate one prediction row for every request in `dataset/deletion_requests.csv`
-- Write the final predictions to `output.csv` in the repository root
-
-Run the starter Python entry point with:
+The default run reads `dataset/` relative to the source file and writes root-level
+`output.csv`. Optional public sample run:
 
 ```bash
-python3 code/main.py
+python code/main.py --requests dataset/sample_deletion_requests.csv --expected-count 32 --output sample_predictions.csv
 ```
 
-The blank template at `dataset/output.csv` is provided as a reference. Your final generated file for submission must be the root-level `output.csv`.
+Run the unit and integration tests with:
+
+```bash
+python -m unittest discover -s code -p "test_*.py" -v
+```
+
+JSON, SQL, and logs use Python's standard library. PDF extraction requires
+`pypdf`; the optional Gemini path requires `google-genai`. Install both with
+`python -m pip install -r code/requirements.txt`. Screenshot evidence reviewed
+for this dataset is transcribed in `code/image_evidence_transcripts.json`; this
+is manual, dataset-specific extraction, not general image OCR. Use `--verbose`
+for diagnostics. Input and output contract errors return exit code 2.
+
+The normal run is deterministic and makes no model calls. Python handles
+identity joins, cutoff filtering, policy selection, phase ordering, validation,
+and serialization. Optional Gemini review only sees small, locally redacted
+excerpts from evidence already associated with the request; it may classify
+those candidate records, but cannot create IDs or set the final deletion status.
+If no relevant uncertain file evidence exists, no Gemini request is made.
+
+### Optional Gemini free-tier pilot
+
+Google currently lists `gemini-3.5-flash-lite` as a stable model with structured
+output and free Standard-tier input/output tokens. Check the [model page](https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite),
+[pricing page](https://ai.google.dev/gemini-api/docs/pricing), and your project's
+active quota in Google AI Studio immediately before use. The application cannot
+verify the account-specific tier or quota. Do not enable billing or run this
+with a paid-tier key; the API model ID alone cannot guarantee free usage.
+
+Google's unpaid-service terms say submitted content may be used to improve
+Google products and may be reviewed by humans; they say not to submit sensitive,
+confidential, or personal information. This pilot therefore redacts known
+identifiers locally, omits identity fields and request text, and sends only
+allowlisted evidence excerpts. Do not use this free-tier path for real personal,
+sensitive, or confidential data. The challenge data is fictional, but the
+redaction remains enabled.
+
+1. Create a free-tier API key in [Google AI Studio](https://aistudio.google.com/).
+   Verify the project shows **Free** tier and check its current quota. Do not
+   attach billing or rely on quota assumptions; Google can restrict access and
+   free-tier usage is limited.
+2. Copy `.env.example` to `.env` and enter the key locally, or set
+   `GEMINI_API_KEY` in your shell. Set `GEMINI_FREE_TIER_CONFIRMED=YES` only
+   after verifying the project's tier, and set `GEMINI_DATA_USE_ACK=YES` only
+   after reviewing the terms above. `.env` is ignored by Git.
+3. Run the public pilot first (at most 5 calls by default):
+
+   ```powershell
+   python code/main.py --requests dataset/sample_deletion_requests.csv --expected-count 32 --gemini-pilot --output sample_gemini.csv --verbose
+   python code/evaluation/main.py --expected dataset/sample_output.csv --predicted sample_gemini.csv --dataset dataset
+   ```
+
+   The normal deterministic sample command is the control. Compare status,
+   exact sequence, step F1, and evidence metrics before deciding whether the
+   optional path helped. A pilot that logs zero linked candidates made zero
+   Gemini calls and supplies no model accuracy evidence.
+4. Only after measuring the sample pilot, set
+   `GEMINI_FULL_RUN_CONFIRMED=YES` and run the full dataset with
+   `--gemini-pilot`. Calls are capped with `--gemini-max-calls N` (default 5),
+   use one SDK attempt, stop on quota exhaustion, and fall back to deterministic
+   processing. The SDK does not use Batch API, caching services, search
+   grounding, or other tools. Account quotas cannot be queried by this program.
+
+If no key is configured, omit `--gemini-pilot` for deterministic-only mode. If
+the flag is supplied but configuration is missing/unsafe, the program logs a
+redacted reason and continues deterministically. Model calls, token usage, and
+Gemini accuracy must be reported only from actual run metadata; no API call has
+been made as part of this repository run so far.
+
+Evaluation tools compare JSON semantically: object-key order is ignored, while
+step array order, missing steps, and extra steps are preserved. The evaluator
+reads (but never modifies) `sample_output.csv`. See
+[`code/evaluation/evaluation_report.md`](./code/evaluation/evaluation_report.md)
+for measured results and remaining limitations.
 
 
 ## Dataset

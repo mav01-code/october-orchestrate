@@ -1,0 +1,14 @@
+{
+  "records": [
+    {"evidence_id":"evidence_04","system_id":"account_service","resource_id":"account_5762","category":"USER_PROFILE","state":"PRESENT","observed_at":"2026-09-26T11:00:00Z","user_id":"user_11","email":"haruka.s1838@zoho.com"},
+    {"evidence_id":"evidence_09","system_id":"search_service","resource_id":"search_428","category":"SEARCH_INDEX_ENTRY","state":"PRESENT","observed_at":"2026-09-01T06:00:00Z","user_id":"user_13","email":"g.silva76@gmail.com"},
+    {"evidence_id":"evidence_14","system_id":"integration_service","resource_id":"data_flow_1121","category":"DATA_FLOW","state":"ACTIVE","observed_at":"2026-08-07T08:00:00Z","user_id":"user_14","email":"jain.aditi@gmail.com"},
+    {"evidence_id":"evidence_19","system_id":"analytics_platform","resource_id":"analytics_7438","category":"ANALYTICS_PROFILE","state":"IDENTIFIABLE","observed_at":"2026-07-13T10:00:00Z","user_id":"user_20","email":"darwish.omar@icloud.com","name":"Omar Darwish"},
+    {"evidence_id":"evidence_23","system_id":"export_service","resource_id":"export_1260","category":"USER_EXPORT","state":"PRESENT","observed_at":"2026-06-18T12:00:00Z","user_id":"user_18","email":"ingrid.dahl@outlook.com","download_available":true,"expires_at":"2026-06-25T06:42:00Z"},
+    {"evidence_id":"evidence_28","system_id":"support_platform","resource_id":"support_1034","category":"SUPPORT_MESSAGE","state":"IDENTIFIABLE","observed_at":"2026-05-24T07:00:00Z","email":"kagyeman8947@fastmail.com","name":"Kofi Agyeman"},
+    {"evidence_id":"evidence_32","system_id":"backup_service","resource_id":"backup_9287","category":"BACKUP_ARCHIVE","state":"ACTIVE","observed_at":"2026-04-29T09:00:00Z","user_id":"user_16","email":"areed1433@gmail.com"},
+    {"evidence_id":"evidence_37","system_id":"security_service","resource_id":"audit_record_003","category":"SECURITY_AUDIT_LOG","state":"PRESENT","observed_at":"2026-09-05T07:00:00Z","user_id":"user_03","email":"oliver-bennett@gmail.com"},
+    {"evidence_id":"evidence_42","system_id":"identity_service","resource_id":"tombstone_17","category":"ACCOUNT_TOMBSTONE","state":"REDACTED","observed_at":"2026-03-10T06:00:00Z","user_id":"user_17"},
+    {"evidence_id":"evidence_46","system_id":"support_platform","resource_id":"object_19","category":"SUPPORT_ATTACHMENT","state":"PRESENT","observed_at":"2026-02-13T08:00:00Z","user_id":"user_07","email":"priya.raman@gmail.com"}
+  ]
+}
